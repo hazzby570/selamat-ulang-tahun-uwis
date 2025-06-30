@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Selamet Ulang Tahun, Uwis!</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+    * { box-sizing: border-box; scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      padding: 0;
+      background: #fce4ec;
+      font-family: 'Comfortaa', cursive;
+      color: #880e4f;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    #intro {
+      position: fixed;
+      z-index: 9999;
+      background: #fce4ec;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 1s ease;
+    }
+    #intro.hide { opacity: 0; pointer-events: none; }
+
+    #bigghost {
+      font-size: 10rem;
+      cursor: pointer;
+      user-select: none;
+      animation: ghostEntrance 1.2s ease-out, pulse 1.5s infinite, ghostFloat 3s ease-in-out infinite;
+      text-shadow: 0 0 10px #ff80ab, 0 0 20px #f06292;
+      transition: transform 0.3s ease;
+    }
+    #bigghost:hover { transform: scale(1.1); }
+
+    @keyframes ghostEntrance {
+      0% { opacity: 0; transform: scale(0.5); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes ghostFloat {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(3deg); }
+      100% { transform: translateY(0) rotate(0deg); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .falling-heart {
+      position: fixed;
+      top: -50px;
+      font-size: 2rem;
+      color: #e91e63;
+      animation: fall 2.5s linear forwards;
+      z-index: 1000;
+      pointer-events: none;
+    }
+    @keyframes fall {
+      to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 3rem;
+      margin: 20px 0 10px;
+      animation: popin 0.6s ease forwards;
+    }
+    p.lucu {
+      font-size: 1.3rem;
+      margin: 5px 15px 15px;
+      animation: popin 1s ease forwards;
+    }
+    blockquote {
+      font-size: 1.2rem;
+      font-style: italic;
+      margin: 1em auto 2em auto;
+      max-width: 90%;
+      color: #ad1457;
+      animation: fadeIn 2s ease forwards;
+    }
+
+    .popit-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+    .popit {
+      width: 60px;
+      height: 60px;
+      background: #f48fb1;
+      border-radius: 50%;
+      box-shadow: inset 0 -5px 10px #ad1457;
+      cursor: pointer;
+      position: relative;
+      animation: popitPop 1.2s ease infinite;
+      transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+      user-select: none;
+    }
+    .popit:active {
+      animation-play-state: paused;
+      background: #ad1457;
+      box-shadow: inset 0 0 5px #880e4f;
+      transform: scale(0.9);
+    }
+    .popit::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 12px;
+      height: 12px;
+      background: #fce4ec;
+      border-radius: 50%;
+      box-shadow: 0 0 6px #fff;
+    }
+
+    button {
+      background: #ad1457;
+      color: #fce4ec;
+      border: none;
+      padding: 12px 30px;
+      font-size: 1.2rem;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(173,20,87,0.6);
+      transition: background 0.3s ease;
+      margin-bottom: 15px;
+      user-select: none;
+    }
+    button:hover { background: #880e4f; }
+
+    #pelukMsg {
+      font-size: 1.4rem;
+      color: #4a148c;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: all 0.5s ease;
+      user-select: none;
+      margin-bottom: 30px;
+    }
+    #pelukMsg.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    #typingMessage {
+      font-size: 1.3rem;
+      max-width: 90%;
+      margin: 0 auto 30px auto;
+      color: #6a1b9a;
+      min-height: 2.2em;
+      font-style: italic;
+    }
+
+    iframe#ytplayer {
+      border-radius: 20px;
+      width: 300px;
+      height: 170px;
+      box-shadow: 0 6px 20px rgba(173, 20, 87, 0.5);
+      margin-bottom: 25px;
+    }
+
+    .bubble-msg {
+      position: absolute;
+      background: #fff;
+      color: #880e4f;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      animation: bubbleFade 2s forwards;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    @keyframes popin {
+      0% {opacity:0; transform: scale(0.6);}
+      100% {opacity:1; transform: scale(1);}
+    }
+    @keyframes fadeIn {
+      0% {opacity:0;}
+      100% {opacity:1;}
+    }
+    @keyframes popitPop {
+      0%, 100% {transform: scale(1);}
+      50% {transform: scale(1.2);}
+    }
+    @keyframes bubbleFade {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-50px); opacity: 0; }
+    }
+
+    #bearScene {
+      position: relative;
+      width: 100vw;
+      height: 200px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    #bear {
+      font-size: 5rem;
+      position: absolute;
+      left: -100px;
+      bottom: 0;
+      animation: bearWalk 6s ease-in-out forwards;
+      z-index: 10;
+    }
+    #balloon {
+      font-size: 2.5rem;
+      position: absolute;
+      left: -60px;
+      bottom: 90px;
+      animation: balloonFloat 6s ease-in-out forwards;
+    }
+    #bearText {
+      text-align: center;
+      font-size: 1.6rem;
+      color: #ad1457;
+      opacity: 0;
+      animation: fadeInText 2s ease 6s forwards;
+    }
+    @keyframes bearWalk {
+      0% { left: -100px; }
+      100% { left: calc(50% - 50px); }
+    }
+    @keyframes balloonFloat {
+      0% { left: -60px; bottom: 90px; }
+      50% { bottom: 100px; }
+      100% { left: calc(50% - 10px); bottom: 90px; }
+    }
+    @keyframes fadeInText {
+      to { opacity: 1; }
+    }
+
+    #pesanKhusus {
+      background: #fff3f8;
+      padding: 40px 20px;
+      color: #6a1b9a;
+    }
+    #pesanKhusus h2 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #ad1457;
+      animation: fadeIn 1s ease-in-out;
+    }
+    .message-box {
+      background: #fce4ec;
+      padding: 30px;
+      border-radius: 25px;
+      box-shadow: 0 4px 12px rgba(173, 20, 87, 0.3);
+      max-width: 700px;
+      margin: auto;
+      animation: popin 1.2s ease forwards;
+    }
+    .message-box p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: #4a148c;
+    }
+    #pesanKhusus footer {
+      margin-top: 30px;
+      font-size: 0.9rem;
+      color: #880e4f;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div id="intro">
+    <div id="bigghost">👻</div>
+  </div>
+  <main style="display:none">
+    <h1>Selamet Ulang Tahun, Uwis!</h1>
+    <p>Terima kasih udah jadi sosok yang kuat, bahkan saat kamu sendiri lagi lelah.</p>
+    <p>Kamu gak harus selalu ceria. Aku suka kamu yang apa adanya, dengan semua versimu bahkan versi yang paling rapuh.</p>
+    <p>Aku bakal tetap di sini, meskipun hanya jadi suara kecil dari jauh yang bilang kamu berharga, kamu dicintai, kamu gak sendirian.</p>
+    <p>Selamat ulang tahun, Uwis. Semoga tahun ini lebih lembut ke kamu. Dan semoga kamu juga jadi lebih lembut ke dirimu sendiri.</p>
+    <p><strong>Dari sahabatmu, yang selalu bangga punya kamu.</strong></p>
+    <div class="popit-container">
+      <div class="popit"></div>
+      <div class="popit"></div>
+      <div class="popit"></div>
+      <div class="popit"></div>
+      <div class="popit"></div>
+    </div>
+    <div id="bearScene">
+      <div id="bear">🐻</div>
+      <div id="balloon">💘</div>
+      <div id="bearText">makin hari makin cantik aja 💕</div>
+    </div>
+    <blockquote>“Urip yo mung pisantok, ojo stress wae wiss!”</blockquote>
+    <button id="pelukBtn">Peluk Virtual seko Koncomu 🤗</button>
+    <div id="pelukMsg">*Peluk anget nggo kowe, Uwis!* 🤜🤛</div>
+    <div id="typingMessage"></div>
+
+
+<iframe id="ytplayer" src="https://www.youtube.com/embed/ne1BjpeVj9c?autoplay=1&loop=1&playlist=ne1BjpeVj9c&controls=1&modestbranding=1" allow="autoplay" allowfullscreen></iframe>
+
+    <button onclick="document.getElementById('pesanKhusus').scrollIntoView({behavior:'smooth'})">📩 Buka Pesan Khusus</button>
+  </main>
+
+<section id="pesanKhusus">
+  <h2>🌸 Pesan Khusus Seko Aku 🌸</h2>
+  <div class="message-box">
+    <p>💌 Halo, Uwis!</p>
+    <p>Happy birthday yaa. Semoga kamu selalu sehat, dilancarkan semua urusannya, dan bahagia dengan jalan yang kamu pilih.</p>
+    <p>Makasih udah pernah hadir di hidupku, nemenin aku, dan tanpa sadar bikin aku jadi pribadi yang lebih baik.</p>
+    <p>Maaf kalau selama ini aku pernah nyebelin, ganggu, atau bikin kamu nggak nyaman.</p>
+    <p>Meskipun kita nggak pernah punya status, rasa ini nyata dan tulus. Aku nggak akan pernah bosen sama kamu.</p>
+    <p>Aku menghargai semua jalan yang kamu pilih, apapun dan siapapun itu. Aku cuma pengen kamu bahagia.</p>
+    <p>Dan aku harap kita masih bisa jadi teman, tetap saling dukung, walaupun mungkin udah nggak sedekat dulu.</p>
+    <hr style="border: 0; height: 1px; background: #f8bbd0; margin: 30px 0;">
+    <p><strong>Konco mu, sing ora iso lali karo guyumu 😄</strong></p>
+  </div>
+  <footer>🎈 Ditulis karo hati sing tulus... 🎈</footer>
+</section>>
+
+  <script>
+    const bigghost = document.getElementById('bigghost');
+    const intro = document.getElementById('intro');
+    const main = document.querySelector('main');
+    const pelukBtn = document.getElementById('pelukBtn');
+    const pelukMsg = document.getElementById('pelukMsg');
+    const typingMessage = document.getElementById('typingMessage');
+    const popits = document.querySelectorAll('.popit');
+    const introSound = new Audio('https://cdn.pixabay.com/audio/2022/03/15/audio_f8d5f38ec5.mp3');
+    const laughSound = new Audio('https://cdn.pixabay.com/audio/2023/03/03/audio_bff15eeb4b.mp3');
+
+    introSound.volume = 0.6;
+    laughSound.volume = 0.6;
+
+    const lucuQuotes = [
+      "Wis ayu, lucu maneh! 😂", "Ojo mung mangu, mangan sik! 🍗",
+      "Ngopi ben ora baper ☕😆", "Kowe kui koyok kuota, nek ilang langsung panik 😱",
+      "Turu wae, ra usah mikir mantan! 😴", "Kowe koyok sego anget, nyaman terus 😍",
+      "Nglirik wae wes deg-degan 😳", "uwis orak uwis-uwis mikir 3 dino",
+      "Sing penting ora nyicil HP 😜"
+    ];
+
+    bigghost.addEventListener('click', () => {
+      introSound.play();
+      laughSound.play();
+      intro.classList.add('hide');
+      startHearts();
+      setTimeout(() => {
+        intro.remove();
+        main.style.display = 'flex';
+      }, 1000);
+    });
+
+    function startHearts() {
+      for (let i = 0; i < 30; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'falling-heart';
+        heart.textContent = '💖';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.fontSize = Math.random() * 1.5 + 1 + 'rem';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 3000);
+      }
+    }
+
+    pelukBtn.addEventListener('click', () => {
+      pelukMsg.classList.add('show');
+      laughSound.play();
+      typeMessage("Seng penting tetep waras yo wis, masio urip kadang koyok roller coaster! 😆");
+    });
+
+    popits.forEach(popit => {
+      popit.addEventListener('click', () => {
+        laughSound.currentTime = 0;
+        laughSound.play();
+        const msg = document.createElement('div');
+        msg.className = 'bubble-msg';
+        msg.textContent = lucuQuotes[Math.floor(Math.random() * lucuQuotes.length)];
+        popit.appendChild(msg);
+        setTimeout(() => msg.remove(), 10000);
+      });
+    });
+
+    function typeMessage(message) {
+      typingMessage.textContent = "";
+      let index = 0;
+      const interval = setInterval(() => {
+        typingMessage.textContent += message[index];
+        index++;
+        if (index === message.length) clearInterval(interval);
+      }, 50);
+    }
+
+    const expressions = ['👻','😜','😝','😳','😈','👀','🥴','🤪'];
+    setInterval(() => {
+      bigghost.textContent = expressions[Math.floor(Math.random() * expressions.length)];
+    }, 2000);
+  </script>
+</body>
+</html>
